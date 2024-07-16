@@ -1,0 +1,138 @@
+############################################################
+#
+# Humidity
+#
+############################################################
+
+# - alias: 'Shower - Humidity Fan'
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.shower_humidity_rising
+#       from: 'off'
+#       to: 'on'
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.shower_hold
+#       state: 'off'
+#     - condition: state
+#       entity_id: input_boolean.night_mode
+#       state: 'off'
+#     - condition: state
+#       entity_id: binary_sensor.house_occupied
+#       state: 'on'
+#     - condition: time
+#       after: '10:00:00'
+#       before: '22:00:00'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.shower_fan
+
+#     - service: homeassistant.turn_on
+#       entity_id: input_boolean.shower_hold
+
+
+- alias: 'Shower - Fan Auto Off'
+  trigger:
+    platform: state
+    entity_id: input_boolean.shower_hold
+    from: 'off'
+    to: 'on'
+    for:
+        minutes: 16
+  action:
+    - service: switch.turn_off
+      entity_id: switch.sonoff
+
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.shower_hold
+
+- alias: 'Shower - Fan Manual Off'
+  trigger:
+    platform: state
+    entity_id: switch.sonoff
+    from: 'off'
+    to: 'on'
+    for:
+        minutes: 12
+  condition:
+    condition: state
+    entity_id: input_boolean.shower_hold
+    state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.sonoff
+
+############################################################
+#
+# Switch
+#
+############################################################
+
+- alias: 'Shower - Light clicked'
+  trigger:
+    platform: state
+    entity_id: sensor.shower_switch_click
+    to: 'single'
+  action:
+    - service: light.toggle
+      entity_id: light.lights_shower
+
+
+- alias: 'Shower - Fan clicked'
+  trigger:
+    platform: state
+    entity_id: sensor.shower_switch_click
+    to: 'long'
+  action:
+    - service: switch.toggle
+      entity_id: switch.sonoff
+
+
+############################################################
+#
+# Motion
+#
+############################################################
+
+- alias: 'Shower - Motion Light on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.shower_presence_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_shower
+        brightness: 255
+        color_temp: 500
+
+- alias: 'Shower - Motion Light Night on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.shower_presence_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_shower
+        brightness: 50
+        color_temp: 500
+
+
+- alias: 'Shower - Motion Light off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.shower_presence_occupancy
+    to: 'off'
+    for: '00:05:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_shower

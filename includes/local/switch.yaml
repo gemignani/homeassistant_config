@@ -1,0 +1,51 @@
+############################################################
+#
+# MQTT Switches
+#
+############################################################
+
+
+  # - platform: mqtt
+  #   name: "Printer"
+  #   state_topic: "stat/printer/POWER"
+  #   command_topic: "cmnd/printer/printer"
+  #   availability_topic: "tele/printer/LWT"
+  #   qos: 1
+  #   payload_on: "ON"
+  #   payload_off: "OFF"
+  #   payload_available: "Online"
+  #   payload_not_available: "Offline"
+    
+  # - platform: mqtt
+  #   name: "Work Device"
+  #   state_topic: "stat/workdevice/POWER"
+  #   command_topic: "cmnd/workdevice/POWER"
+  #   availability_topic: "tele/workdevice/LWT"
+  #   qos: 1
+  #   payload_on: "ON"
+  #   payload_off: "OFF"
+  #   payload_available: "Online"
+  #   payload_not_available: "Offline"
+
+
+  # - platform: mqtt
+  #   name: "Shower Fan"
+  #   state_topic: "stat/showerfan/POWER"
+  #   command_topic: "cmnd/showerfan/POWER"
+  #   availability_topic: "tele/showerfan/LWT"
+  #   qos: 1
+  #   payload_on: "ON"
+  #   payload_off: "OFF"
+  #   payload_available: "Online"
+  #   payload_not_available: "Offline"
+
+
+############################################################
+#
+# Wake on LAN
+#
+############################################################
+
+  # - platform: wake_on_lan
+  #   mac: "70:85:c2:cb:73:01"
+  #   name: "WOL A300"

@@ -1,0 +1,115 @@
+############################################################
+#
+# Alerts
+#
+############################################################
+
+front_door:
+  name: Alert Front door is opened
+  done_message: Front door is closed
+  entity_id: binary_sensor.hall_door_contact
+  state: 'on'
+  repeat: 10
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+kitchen_light:
+  name: Alert Kitchen Light ON 120m
+  done_message: Kitchen Light OFF
+  entity_id: switch.kitchen_switch_main_switch_left
+  state: 'on'
+  repeat: 120
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+office_light_switch:
+  name: Alert Office Light Switch ON 600m
+  done_message: Office Light Switch OFF
+  entity_id: binary_sensor.office_window_contact
+  state: 'on'
+  repeat: 600
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+hall_light:
+  name: Alert Hall Light ON 300m
+  done_message: Hall Light OFF
+  entity_id: light.lights_hall
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+bedroom_light:
+  name: Alert Bedroom Light ON 300m
+  done_message: Bedroom Light OFF
+  entity_id: light.bedroom
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+office_window:
+  name: Alert Office Window left opened
+  done_message: Office Window was closed
+  entity_id: binary_sensor.office_window_contact
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+bedroom_window:
+  name: Alert Bedroom Window left opened
+  done_message: Bedroom Window was closed
+  entity_id: binary_sensor.bedroom_window_contact
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+living_window:
+  name: Alert Lounge AV Window left opened
+  done_message: Lounge Dining Window was closed
+  entity_id: binary_sensor.lounge_window_av_contact
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+dining_window:
+  name: Alert Dining Window left opened
+  done_message: Dining Window was closed
+  entity_id: binary_sensor.lounge_window_dinner_contact
+  state: 'on'
+  repeat: 300
+  can_acknowledge: True
+  skip_first: True
+  notifiers:
+    - notify_apps
+
+# kitchen_window:
+#   name: Alert Kitchen Window is opened
+#   done_message: Kitchen Window is closed
+#   entity_id: binary_sensor.door_window_sensor_158d000232cc5c
+#   state: 'on'
+#   repeat: 150
+#   can_acknowledge: True
+#   skip_first: False
+#   notifiers:
+#     - notify_apps

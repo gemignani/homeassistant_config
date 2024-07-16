@@ -1,0 +1,97 @@
+############################################################
+#
+# Mini Switch
+#
+############################################################
+
+- alias: 'Office - Switch Monitors'
+  trigger:
+    platform: state
+    entity_id: sensor.office_switch_pc_click
+    to: 'long'
+  action:
+    service: switch.toggle
+    entity_id: switch.office_mains
+    
+- alias: 'Office - Switch Lights'
+  trigger:
+    platform: state
+    entity_id: sensor.office_switch_pc_click
+    to: 'single'
+  action:
+    service: switch.toggle
+    entity_id: switch.office_switch_main
+
+############################################################
+#
+# Motion
+#
+############################################################
+  
+# - alias: 'Office - Motion Light on'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.office_presence_occupancy
+#     to: 'on'
+#   condition:
+#    - condition: state
+#      entity_id:  input_boolean.guest_mode
+#      state: 'off'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.office_switch_main
+
+# - alias: 'Office - Motion Light off'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.office_presence_occupancy
+#     to: 'off'
+#     for: '00:03:00'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.guest_mode
+#       state: 'off'
+#     - condition: state
+#       entity_id: binary_sensor.office_pc
+#       state: 'off'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.office_switch_main
+
+# - alias: 'Office - PC OFF'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.office_pc
+#     to: "off"
+#     for: '00:30:00'
+#   condition:
+#     - condition: time
+#       after: '18:00:00'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.office_pc
+
+
+- alias: 'Office - Auto off Light Motion'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.office_presence_occupancy
+    to: 'off'
+    for: '04:00:00'
+  condition:
+   - condition: state
+     entity_id:  input_boolean.guest_mode
+     state: 'off'
+  action:
+   - service: switch.turn_off
+     entity_id: switch.office_switch_main
+
+- alias: 'Office - Auto off Light'
+  trigger:
+    platform: state
+    entity_id: switch.office_switch_main
+    to: 'on'
+    for: '20:00:00'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.office_switch_main

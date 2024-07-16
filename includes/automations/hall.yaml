@@ -1,0 +1,142 @@
+############################################################
+#
+# Front Door
+#
+############################################################
+
+- alias: 'Hall - Door opened'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hall_door_contact
+    to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_hall
+        brightness: 255
+        color_temp: 500
+
+############################################################
+#
+# Motion
+#
+############################################################
+
+- alias: 'Hall - Motion Lights on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hall_presence_2_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'off'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_hall
+        brightness: 255
+        color_temp: 500
+
+- alias: 'Hall - Motion Lights Night on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hall_presence_2_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_hall
+        brightness: 50
+        color_temp: 500
+
+- alias: 'Hall - Motion Light off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.hall_presence_2_occupancy
+    to: 'off'
+    #for: '00:01:30'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_hall
+
+############################################################
+#
+# Mini Switch
+#
+############################################################
+
+- alias: "Hall - Switch Mini Single"
+  trigger:
+    platform: state
+    entity_id: sensor.hall_switch_alarm_click
+    to: 'single'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.house_occupied
+    - service: scene.turn_on
+      entity_id: scene.empty
+
+
+- alias: "Hall - Switch Mini Long"
+  trigger:
+    platform: state
+    entity_id: sensor.hall_switch_alarm_click
+    to: 'long'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.house_occupied
+
+############################################################
+#
+# Main Switch
+#
+############################################################
+
+- alias: 'Hall - Switch Main'
+  trigger:
+    - platform: state
+      entity_id: sensor.hall_main_switch_click
+      to: right
+    - platform: state
+      entity_id: sensor.hall_main_switch_click
+      to: left
+  action:
+    service: light.toggle
+    entity_id: light.lights_hall
+
+############################################################
+#
+# Far Switch
+#
+############################################################
+
+- alias: 'Hall - Switch Far'
+  trigger:
+    - platform: state
+      entity_id: sensor.hall_switch_far_click
+      to: 'left'
+    - platform: state
+      entity_id: sensor.hall_switch_far_click
+      to: 'right'
+  action:
+    - service: light.toggle
+      entity_id: light.lights_hall
+
+
+
+- alias: 'Hall - Auto Off'
+  trigger:
+    platform: state
+    entity_id: light.lights_hall
+    to: 'on'
+    for: '00:30:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_hall

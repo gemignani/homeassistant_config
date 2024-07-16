@@ -1,0 +1,117 @@
+############################################################
+#
+# Bedside Switches
+#
+############################################################
+
+- alias: 'Bedroom - Switch Light'
+  trigger:
+    - platform: state
+      entity_id: sensor.bedroom_switch_doug_click
+      to: right
+    - platform: state
+      entity_id: sensor.bedroom_switch_emi_click
+      to: left
+  action:
+    service: switch.toggle
+    entity_id: switch.bedroom_switch
+
+- alias: 'Bedroom - Switch Bedside'
+  trigger:
+    - platform: state
+      entity_id: sensor.bedroom_switch_doug_click
+      to: left
+    - platform: state
+      entity_id: sensor.bedroom_switch_emi_click
+      to: right
+  action:
+    service: light.toggle
+    entity_id: light.bedside    
+
+- alias: 'Bedroom - Switch Both'
+  trigger:
+    - platform: state
+      entity_id: sensor.bedroom_switch_doug_click
+      to: both
+    - platform: state
+      entity_id: sensor.bedroom_switch_emi_click
+      to: both
+  action:
+    - service: automation.turn_off
+      entity_id: automation.bedroom_motion_light_off
+    - service: automation.turn_off
+      entity_id: automation.bedroom_motion_lights_on
+
+############################################################
+#
+# Presence
+#
+############################################################
+
+# - alias: 'Bedroom - Motion Enable'
+#   trigger:
+#     platform: time
+#     at: '11:00:00'
+#   action:
+#     - service: automation.turn_on
+#       entity_id: automation.bedroom_motion_light_off
+#     - service: automation.turn_on
+#       entity_id: automation.bedroom_motion_lights_on
+
+# - alias: 'Bedroom - Motion Disable'
+#   trigger:
+#     platform: time
+#     at: '22:00:00'
+#   action:
+#     - service: automation.turn_off
+#       entity_id: automation.bedroom_motion_lights_on
+
+# - alias: 'Bedroom - Motion Lights on'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.bedroom_presence_occupancy
+#     to: 'on'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.bedroom_switch
+
+- alias: 'Bedroom - Motion Light off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bedroom_presence_occupancy
+    to: 'off'
+    for: '00:05:00'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.bedroom_switch
+
+
+# - alias: Bedroom Test Presence
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.bedroom_presence_occupancy
+#     to: 'off'
+#     for:
+#       minutes: 60
+#   condition:
+#     condition: and
+#     conditions:
+#     - condition: time
+#       after: '00:00:00'
+#       before: '09:00:00'
+#   action:
+#     - service: notify.notify_telegram
+#       data:
+#         message: >
+#           60 minutes without presence at night
+
+
+- alias: 'Bedroom - Auto off'
+  trigger:
+    platform: state
+    entity_id: switch.bedroom_switch
+    to: 'on'
+    for: '01:00:00'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.bedroom_switch

@@ -1,0 +1,57 @@
+############################################################
+#
+# Energy Meter
+#
+############################################################
+
+# MONTHLY
+ 
+  power_office_monthly:
+    source: sensor.office_mains_power
+    cycle: monthly
+    offset:
+      days: 16
+  power_lounge_monthly:
+    source: sensor.lounge_mains_power
+    cycle: monthly
+    offset:
+      days: 16
+  # power_lounge_emipc_monthly:
+  #   source: sensor.lounge_emipc_today_s_consumption
+  #   cycle: monthly
+  #   offset:
+  #     days: 16
+  # power_lounge_media_monthly:
+  #   source: sensor.lounge_media_today_s_consumption
+  #   cycle: monthly
+  #   offset:
+  #     days: 16
+  # power_all_devices_monthly:
+  #   source: sensor.power_all_devices_daily
+  #   cycle: monthly
+  #   offset:
+  #     days: 16
+
+# DAILY
+ 
+  power_office_daily:
+    source: sensor.office_mains_power
+    cycle: daily
+  power_lounge_daily:
+    source: sensor.lounge_mains_power
+    cycle: daily
+  # power_lounge_emipc_monthly:
+  #   source: sensor.lounge_emipc_today_s_consumption
+  #   cycle: monthly
+  #   offset:
+  #     days: 16
+  # power_lounge_media_monthly:
+  #   source: sensor.lounge_media_today_s_consumption
+  #   cycle: monthly
+  #   offset:
+  #     days: 16
+  # power_all_devices_monthly:
+  #   source: sensor.power_all_devices_daily
+  #   cycle: monthly
+  #   offset:
+  #     days: 16

@@ -1,0 +1,78 @@
+############################################################
+#
+# Home Assistant Main Configuration File
+#
+############################################################
+
+# Components
+system_health:
+config:
+# discovery:
+history:
+logbook:
+recorder:
+sun:
+energy:
+lovelace:
+  mode: yaml
+  resources:
+    - url: /hacsfiles/octopus-energy-rates-card/octopus-energy-rates-card.js
+      type: module
+    - url: /local/octopus-energy-rates-card/octopus-energy-rates-card.js
+      type: module
+  dashboards:
+    lovelace-generated: # Needs to contain a hyphen (-)
+      mode: yaml
+      filename: ui-energy.yaml
+      title: Power
+      icon: mdi:power
+    lovelace-maps: # Needs to contain a hyphen (-)
+      mode: yaml
+      filename: ui-maps.yaml
+      title: Maps
+      icon: mdi:google-maps
+    lovelace-system: # Needs to contain a hyphen (-)
+      mode: yaml
+      filename: ui-system.yaml
+      title: System
+      icon: mdi:database
+
+mobile_app:
+frontend:
+api:
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.18.0.0/24
+
+webhook:
+zeroconf:
+my:
+# wake_on_lan:
+
+# Infra
+homeassistant: !include includes/infra/homeassistant.yaml
+zone: !include_dir_merge_list includes/zone
+# automation ui: !include automations.yaml
+automation: !include_dir_merge_list includes/automations
+group: !include_dir_merge_named includes/group
+scene: !include includes/scenes.yaml
+alarm_control_panel: !include includes/infra/alarm_panel.yaml
+alert: !include includes/infra/alerts.yaml
+binary_sensor: !include includes/infra/binary_sensors.yaml
+input_boolean: !include includes/infra/input_boolean.yaml
+input_select: !include includes/infra/input_select.yaml
+input_number: !include includes/infra/input_number.yaml
+utility_meter: !include includes/infra/meter.yaml
+
+input_text:
+  trigger_source:
+    name: Trigger Source
+
+# Local
+notify: !include includes/local/notify.yaml
+sensor: !include_dir_merge_list includes/sensors
+switch: !include includes/local/switch.yaml
+
+# Cloud
+# spotify: !include includes/cloud/spotify.yaml

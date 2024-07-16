@@ -1,0 +1,435 @@
+############################################################
+#
+# Motion
+#
+############################################################
+
+# - alias: 'Lounge - Motion Light on'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.0x00158d0001e548b8_occupancy
+#     to: 'on'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.guest_mode
+#       state: 'off'
+#     - condition: state
+#       entity_id:  media_player.avr
+#       state: 'off'
+#     - condition: state
+#       entity_id:  binary_sensor.emi_pc
+#       state: 'off'  
+#     # - condition: state
+#     #   entity_id: light.lights_lounge
+#     #   state: 'off'
+#     #   for: '00:03:00'
+# # #    - condition: template
+# # #      value_template: '{{ states ("sensor.illumination_158d0001e548b8") | int < 8 }}'
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.lights_lounge
+# #        brightness: 255
+
+# - alias: 'Lounge - Motion Light off'
+#   trigger:
+#     - platform: time_pattern
+#       minutes: '/1'
+#   condition:
+#     - condition: state
+#       entity_id:  input_boolean.guest_mode
+#       state: 'off'
+#     - condition: state
+#       entity_id:  media_player.avr
+#       state: 'off'
+#     - condition: state
+#       entity_id:  binary_sensor.emi_pc
+#       state: 'off'
+#     # - condition: template
+#     #   value_template: >
+#     #    {% if is_state ('input_select.emi_room_location, 'Lounge') %}
+#     #      false
+#     #    {% else %}
+#     #      true
+#     #    {% endif %}
+#     # - condition: template
+#     #   value_template: >
+#     #    {% if is_state ('input_select.doug_room_location, 'Lounge') %}
+#     #      false
+#     #    {% else %}
+#     #      true
+#     #    {% endif %}
+#     - condition: state
+#       entity_id: binary_sensor.0x00158d0001e548b8_occupancy
+#       state: 'off'
+#       for: '01:15:00'
+#   action:
+#     # - service: notify.notify_telegram
+#     #   data:
+#     #     message: "Lounge empty 7 min"
+#     # - service: automation.turn_off
+#     #   entity_id: automation.lounge_motion_light_off
+#     - service: light.turn_off
+#       entity_id: light.lights_lounge
+
+- alias: 'Lounge - Motion Night Lights on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.lounge_presence_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'on'
+    - condition: state
+      entity_id:  input_boolean.guest_mode
+      state: 'off'
+  action:
+    service: scene.turn_on
+    entity_id: scene.night
+
+- alias: 'Lounge - Motion Night Light off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.lounge_presence_occupancy
+    to: 'off'
+    for: '00:20:00'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'on'
+    - condition: state
+      entity_id:  input_boolean.guest_mode
+      state: 'off'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_lounge
+
+
+############################################################
+#
+# Switch Emi PC
+#
+############################################################
+
+
+# - alias: 'Lounge - Emi PC ON'
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.night_mode
+#     to: "off"
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.lounge_emipc
+
+# - alias: 'Lounge - Emi PC Light ON'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.emi_pc
+#     to: "on"
+#     for: '00:01:00'
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.work_device
+
+# - alias: 'Lounge - Emi PC Light OFF'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.emi_pc
+#     to: "off"
+#     for: '00:01:00'
+
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.work_device
+
+    # - condition: state
+    #   entity_id: light.lights_lounge
+    #   state: 'on'
+
+    # - service: scene.turn_on
+    #   entity_id: scene.lounge
+
+# - alias: 'Lounge - Emi PC OFF'
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.emi_pc
+#     to: "off"
+#     for: '00:30:00'
+#   condition:
+#     - condition: time
+#       after: '18:00:00'
+
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.lounge_emipc
+
+############################################################
+#
+# Switch Lights
+#
+############################################################
+
+- alias: 'Lounge - Switch Left Lights'
+  trigger:
+    platform: state
+    entity_id: sensor.lounge_switch_main_click
+    to: 'left'
+  action:
+    service: light.toggle
+    data:
+      entity_id: light.lights_lounge
+      brightness: 255
+      color_temp: 500
+      transition: 1
+
+- alias: 'Lounge - Switch Right Lights'
+  trigger:
+    platform: state
+    entity_id: sensor.lounge_switch_main_click
+    to: 'right'
+  action:
+    service: light.toggle
+    data:
+      entity_id: light.lights_lounge
+      brightness: 255
+      color_temp: 173
+      transition: 1
+
+############################################################
+#
+# AV
+#
+############################################################
+
+- alias: 'Lounge - Subwoofer ON'
+  trigger:
+    platform: state
+    entity_id: media_player.avr
+    to: 'on'
+  action:
+    service: switch.turn_on
+    entity_id: switch.lounge_subwoofer
+
+
+- alias: 'Lounge - Subwoofer OFF'
+  trigger:
+    platform: state
+    entity_id: media_player.avr
+    to: 'off'
+  action:
+    service: switch.turn_off
+    entity_id: switch.lounge_subwoofer
+
+
+############################################################
+#
+# TV Dimmer
+#
+############################################################
+
+- alias: 'Lounge - TV Dimmer ON Press'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'on-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'on-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.lounge
+   
+- alias: 'Lounge - TV Dimmer UP'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'up-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'up-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.work
+
+- alias: 'Lounge - TV Dimmer DOWN'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'down-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'down-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.media
+
+- alias: 'Lounge - TV Dimmer OFF'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'off-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_tv_action
+      to: 'off-hold'
+  action:
+    service: light.turn_off
+    entity_id: light.lights_lounge
+
+############################################################
+#
+# Main Dimmer
+#
+############################################################
+
+- alias: 'Lounge - Dimmer ON'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'on-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'on-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.lounge
+
+- alias: 'Lounge - Dimmer UP'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'up-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'up-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.work
+
+- alias: 'Lounge - Dimmer DOWN'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'down-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'down-hold'
+  action:
+    service: scene.turn_on
+    entity_id: scene.media
+
+- alias: 'Lounge - Dimmer OFF'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'off-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer2_action
+      to: 'off-hold'
+  action:
+    service: light.turn_off
+    entity_id: light.lights_lounge
+
+############################################################
+#
+# Dinner Dimmer
+#
+############################################################
+
+- alias: 'Lounge - Dinner ON'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'on-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'on-hold'
+  action:
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.spotify_doug
+        source: Receiver
+    - delay: '00:00:02'
+    - service: media_player.play_media
+      entity_id: media_player.spotify_doug
+      data:
+        media_content_id: spotify:playlist:37i9dQZF1DX2SK4ytI2KAZ
+        media_content_type: playlist
+
+    - service: media_player.shuffle_set
+      data:
+        entity_id: media_player.spotify_doug
+        shuffle: 'true'
+    - delay: '00:00:02'
+    - service: media_player.media_next_track
+      data:
+        entity_id: media_player.spotify_doug
+
+- alias: 'Lounge - Dinner UP'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'up-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'up-hold'
+  action:
+    service: media_player.media_next_track
+    data:
+      entity_id: media_player.spotify_doug
+
+- alias: 'Lounge - Dinner DOWN'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'down-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'down-press'
+  action:
+    service: scene.turn_on
+    entity_id: scene.media
+
+- alias: 'Lounge - Dinner OFF'
+  trigger:
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'off-press'
+    - platform: state
+      entity_id: sensor.lounge_dimmer_dinner_action
+      to: 'off-hold'
+  action:
+    service: media_player.media_stop
+    data:
+      entity_id: media_player.spotify_doug
+
+
+
+- alias: 'Lounge - Auto off Lights 2am'
+  trigger:
+    platform: time
+    at: '02:00:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_lounge
+
+- alias: 'Lounge - Auto off Lights'
+  trigger:
+    platform: state
+    entity_id: light.lights_lounge
+    to: 'on'
+    for: '20:00:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_lounge
+
+
+# - alias: 'Lounge - Auto off Subwoofer'
+#   trigger:
+#     platform: state
+#     entity_id: switch.lounge_subwoofer
+#     to: 'on'
+#     for: '08:00:00'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.lounge_subwoofer

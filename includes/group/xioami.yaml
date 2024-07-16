@@ -1,0 +1,22 @@
+############################################################
+#
+# Xiaomi
+#
+############################################################
+
+
+all_motion:
+   - binary_sensor.lounge_presence_occupancy
+   - binary_sensor.kitchen_presence_occupancy
+   - binary_sensor.bedroom_presence_occupancy
+   - binary_sensor.hall_presence_occupancy
+   - binary_sensor.office_presence_occupancy
+   - binary_sensor.bathroom_presence_occupancy
+   - binary_sensor.shower_presence_occupancy
+
+all_door:
+   - binary_sensor.bedroom_window_contact
+   - binary_sensor.lounge_window_av_contact
+   - binary_sensor.lounge_window_dinner_contact
+   - binary_sensor.hall_door_contact
+   - binary_sensor.office_window_contact

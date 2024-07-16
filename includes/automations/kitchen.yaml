@@ -1,0 +1,88 @@
+############################################################
+#
+# Motion
+#
+############################################################
+
+- alias: 'Kitchen - Motion Light Left on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'on'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.kitchen_switch_main_switch_left
+
+- alias: 'Kitchen - Motion Light Right on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: input_boolean.night_mode
+      state: 'off'
+  action:
+    - service: switch.turn_on
+      entity_id: switch.kitchen_switch_main_switch_right
+
+- alias: 'Kitchen - Motion Light Right off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'off'
+    for: '00:03:30'
+  condition:
+    - condition: state
+      entity_id: input_boolean.cooking_mode
+      state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_right
+
+- alias: 'Kitchen - Motion Light Left off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'off'
+    for: '00:03:00'
+  condition:
+    - condition: state
+      entity_id: input_boolean.cooking_mode
+      state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_left
+
+- alias: 'Kitchen - Motion Light Cooking Right off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'off'
+    for: '00:05:30'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_right
+
+- alias: 'Kitchen - Motion Light Cooking Left off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.kitchen_presence_occupancy
+    to: 'off'
+    for: '00:06:30'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_left
+
+
+- alias: 'Kitchen - Auto off'
+  trigger:
+    platform: state
+    entity_id: switch.kitchen_switch_main_switch_left
+    to: 'on'
+    for: '02:30:00'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_right
+    - service: switch.turn_off
+      entity_id: switch.kitchen_switch_main_switch_left

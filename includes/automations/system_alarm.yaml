@@ -1,0 +1,214 @@
+############################################################
+#
+# Alarm Trigger
+#
+############################################################
+
+- alias: 'Alarm - Trigger Armed away'
+  trigger:
+    - platform: state
+      entity_id: 
+         - binary_sensor.lounge_presence_occupancy
+         - binary_sensor.kitchen_presence_occupancy
+         - binary_sensor.bedroom_presence_occupancy
+         - binary_sensor.hall_presence_occupancy
+         - binary_sensor.office_presence_occupancy
+         - binary_sensor.bathroom_presence_occupancy
+         - binary_sensor.shower_presence_occupancy
+         - binary_sensor.bedroom_window_contact
+         - binary_sensor.lounge_window_av_contact
+         - binary_sensor.lounge_window_dinner_contact
+         - binary_sensor.hall_door_contact
+         - binary_sensor.office_window_contact
+      from: "off"
+      to: "on"
+
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: armed_away
+  action:
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.trigger_source
+        value: "{{ trigger.to_state.attributes.friendly_name }}"
+
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.alarm
+
+- alias: 'Alarm - Trigger Armed home'
+  trigger:
+     - platform: state
+       entity_id: 
+         - binary_sensor.bedroom_window_contact
+         - binary_sensor.lounge_window_av_contact
+         - binary_sensor.lounge_window_dinner_contact
+         - binary_sensor.hall_door_contact
+         - binary_sensor.office_window_contact
+       from: "off"
+       to: "on"
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: armed_home
+  action:
+    - service: input_text.set_value
+      data_template:
+        entity_id: input_text.trigger_source
+        value: "{{ trigger.to_state.attributes.friendly_name }}"
+    - service: alarm_control_panel.alarm_trigger
+      entity_id: alarm_control_panel.alarm
+
+############################################################
+#
+# Alarm Triggered
+#
+############################################################
+
+
+- alias: 'Alarm - Triggered Send notification'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: "triggered"
+  action:
+    - service: notify.notify_apps
+      data:
+        title: "ALARM SYSTEM TRIGGERED!"
+        message: "By {{ states('input_text.trigger_source') }} at {{now().strftime('%H:%M %d-%m-%Y')}}." 
+
+# - alias: 'Alarm - Triggered Noise'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       to: "triggered"
+#   action:
+#     - service: xiaomi_aqara.play_ringtone
+#       data:
+#         ringtone_id: 2
+#         ringtone_vol: 100
+#         gw_mac: !secret gateway_xiaomi_mac
+
+############################################################
+#
+# Alarm Auto Arm
+#
+############################################################
+
+- alias: 'Alarm - Arm Away'
+  trigger:
+    platform: state
+    entity_id: input_boolean.house_occupied
+    to: 'off'
+    for:
+      minutes: 3
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: disarmed
+  action:
+    - service: alarm_control_panel.alarm_arm_away
+      entity_id: alarm_control_panel.alarm
+
+    - service: notify.notify_apps
+      data:
+        title: "Alarm System"
+        message: "Armed"
+
+- alias: 'Alarm - Arm Home'
+  trigger:
+    platform: state
+    entity_id: input_boolean.night_mode
+    to: 'on'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: disarmed
+  action:
+    - service: alarm_control_panel.alarm_arm_home
+      entity_id: alarm_control_panel.alarm
+
+############################################################
+#
+# Alarm Auto Disarm
+#
+############################################################
+
+- alias: 'Alarm - Disarm Home'
+  trigger:
+    platform: state
+    entity_id: input_boolean.night_mode
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: alarm_control_panel.alarm
+      state: armed_home
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alarm
+
+
+- alias: "Alarm - Disarm Away"
+  trigger:
+    - platform: state
+      entity_id: person.douglas
+      to: 'home'
+    - platform: state
+      entity_id: person.elaine
+      to: 'home'
+  condition:
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: alarm_control_panel.alarm
+        state: armed_away
+      - condition: state
+        entity_id: alarm_control_panel.alarm
+        state: pending
+  action:
+    - service: alarm_control_panel.alarm_disarm
+      entity_id: alarm_control_panel.alarm
+    - service: notify.notify_apps
+      data:
+        title: "Alarm System"
+        message: "Disarmed"
+
+############################################################
+#
+# Alarm Status
+#
+############################################################
+
+- alias: 'Alarm - Lights Arming'
+  trigger:
+    - platform: state
+      entity_id: alarm_control_panel.alarm
+      to: "arming"
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_hall
+        brightness: 254
+        color_temp: 153
+
+
+# - alias: 'Alarm - Lights ON'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       from: "disarmed"
+#   action:
+#     - service: light.turn_on
+#       entity_id: light.gateway_light_34ce00fa7afd
+#       data:
+#         rgb_color: [55,243,42]
+#         brightness: 50
+
+# - alias: 'Alarm - Lights OFF'
+#   trigger:
+#     - platform: state
+#       entity_id: alarm_control_panel.alarm
+#       to: "disarmed"
+#   action:
+#     - service: homeassistant.turn_off
+#       entity_id: light.gateway_light_34ce00fa7afd

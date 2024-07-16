@@ -1,0 +1,20 @@
+title: Maps
+views:
+  - name: Map
+    title: Map
+    icon: mdi:map
+    cards:
+      - title: Doug
+        type: map
+        dark_mode: true
+        hours_to_show: 12
+        entities:
+          - device_tracker.doug_s23
+          
+
+      - title: Emi
+        type: map
+        dark_mode: true
+        hours_to_show: 2
+        entities:
+          - device_tracker.emi_s23

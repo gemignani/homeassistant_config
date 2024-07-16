@@ -1,0 +1,19 @@
+############################################################
+#
+# Bathroom
+#
+############################################################
+
+  bathroom_fan:
+    name: Bathroom FAN
+    initial: 60
+    min: 50
+    max: 90
+    step: 1
+
+  shower_fan:
+    name: Bathroom FAN
+    initial: 60
+    min: 50
+    max: 90
+    step: 1

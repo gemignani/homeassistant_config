@@ -1,0 +1,289 @@
+name: Home
+# resources:
+#   - url: /local/vacuum-card.js
+#     type: module
+  # - url: /local/valetudo-map-card.js
+  #   type: js
+
+
+views:
+  - name: default_view
+    title: Default
+    icon: mdi:home
+    cards:
+      - type: glance
+        title: Lounge
+        entities:
+          - entity: light.lights_lounge
+            name: Light
+          - entity: climate.hive_thermostat_heat
+            name: Thermostat
+          - entity: binary_sensor.lounge_presence_occupancy
+            name: Presence
+
+
+      - type: glance
+        title: Lounge Media
+        entities:
+          - entity: switch.lounge_mains
+            name: Media
+          - entity: switch.lounge_sub
+            name: Subwoofer
+          - entity: media_player.receiver
+            name: Receiver
+          - entity: media_player.spotify_doug
+            name: Spotify Doug
+
+      -  type: glance
+         title: Office
+         entities:
+          - entity: switch.office_switch_main
+            name: Light
+          - type: thermostat
+            entity: climate.office_valve2
+            name: Valve
+          # - entity: binary_sensor.office_presence_occupancy
+          #   name: Presence
+          - entity: switch.office_mains
+            name: Office PCs
+          # - entity: switch.office_lab
+          #   name: Office Lab
+      -  type: glance
+         title: Hall
+         entities:
+           - entity: light.lights_hall
+             name: Light
+           - entity: alarm_control_panel.alarm
+             name: Alarm
+          #  - entity: binary_sensor.hall_door_contact
+          #    name: Door
+           - entity: binary_sensor.hall_presence_2_occupancy
+             name: Presence
+
+      -  type: glance
+         title: Bedroom
+         entities:
+          - entity: switch.bedroom_switch
+            name: Light
+          - entity: light.bedside
+            name: Bedside
+          - type: thermostat
+            entity: climate.bedroom_valve
+            name: Valve
+          - entity: sensor.bedroom_temperature_temperature
+            name: Temperature
+          - entity: sensor.bedroom_temperature_humidity
+            name: Humidity
+          - entity: binary_sensor.bedroom_presence_occupancy
+            name: Presence
+
+      -  type: glance
+         title: Kitchen
+         entities:
+          - entity: switch.kitchen_switch_main_switch_left
+            name: Light
+          - entity: switch.kitchen_switch_main_switch_right
+            name: Cupboard
+          - entity: binary_sensor.kitchen_presence_occupancy
+            name: Presence
+                        
+      -  type: glance
+         title: Bathroom
+         entities:
+          - entity: light.lights_bathroom
+            name: Light
+          - entity: switch.bathroom_fan
+            name: Fan
+          - entity: binary_sensor.bathroom_presence_occupancy
+            name: Presence
+          - entity: sensor.office_temperature_temperature
+            name: Temperature
+          - entity: sensor.office_temperature_humidity
+            name: Humidity
+
+      -  type: glance
+         title: Shower
+         entities:
+          - entity: light.lights_shower
+            name: Light
+          - entity: switch.sonoff
+            name: Fan
+          - entity: binary_sensor.shower_presence_occupancy
+            name: Presence
+          - entity: sensor.shower_temperature_temperature
+            name: Temperature
+          - entity: sensor.shower_temperature_humidity
+            name: Humidity
+
+
+  # - name: Vacuum
+  #   title: Vacuum
+  #   icon: mdi:robot-vacuum
+  #   cards:
+      # - type: entities
+      #   title: Vacuum
+      #   show_header_toggle: false
+      #   entities:
+      #     - type: 'custom:valetudo-map-card'
+      #       entity: sensor.xiaomi_map
+      #       rotate: 0
+      #       crop:
+      #         top: 0
+      #         bottom: 0
+      #         left: 0
+      #         right: 0
+      #       min_height: 0
+  
+      # - type: 'custom:vacuum-card'
+      #   entity: vacuum.rockrobo
+      #   stats:
+      #     default:
+      #       - attribute: filter_left
+      #         unit: hours
+      #         subtitle: Filter
+      #       - attribute: side_brush_left
+      #         unit: hours
+      #         subtitle: Side brush
+      #       - attribute: main_brush_left
+      #         unit: hours
+      #         subtitle: Main brush
+      #       - attribute: sensor_dirty_left
+      #         unit: hours
+      #         subtitle: Sensors
+      #     cleaning:
+      #       - attribute: cleaned_area
+      #         unit: m2
+      #         subtitle: Cleaning area
+      #       - attribute: cleaning_time
+      #         unit: minutes
+      #         subtitle: Cleaning time
+      #   actions:
+      #     - name: Clean living room
+      #       service: script.clean_living_room
+      #       icon: 'mdi:sofa'
+      #     - name: Clean bedroom
+      #       service: script.clean_bedroom
+      #       icon: 'mdi:bed-empty'
+      #     - name: Clean kitchen
+      #       service: script.clean_kitchen
+      #       icon: 'mdi:silverware-fork-knife'
+
+  - name: Music
+    title: Music
+    icon: mdi:music
+    cards:
+      - type: entities
+        title: Receiver
+        entities:
+          - number.dialogue_level
+          - switch.enhancer
+          - select.link_audio_delay
+          - select.link_audio_quality
+          - select.link_control
+          - select.sleep_timer
+          - select.surround_decoder_device
+          - number.tone_control_bass
+          - select.tone_control_mode
+          - number.tone_control_treble        
+      - type: media-control
+        entity: media_player.spotify_doug
+
+
+  - name: Weather
+    title: Weather
+    icon: mdi:weather-sunny
+    cards:
+      - type: entities
+        title: 'Climate'
+        show_header_toggle: false
+        entities:
+          - entity: climate.hive_thermostat_heat
+            name: Thermostat
+          - entity: climate.office_valve2
+            name: Office Valve
+          - entity: climate.bedroom_valve
+            name: Bedroom Valve
+          - entity: sensor.bedroom_temperature_temperature     
+            name: Bedroom
+          - entity: sensor.office_temperature_temperature
+            name: Bathroom
+          - entity: sensor.shower_temperature_temperature
+            name: Shower
+
+      - type: entities
+        title: 'Humidity Shower'
+        show_header_toggle: false
+        entities:
+          - entity: sensor.shower_humidity_stats
+            name: Shower Humidity
+
+          - entity: binary_sensor.shower_humidity_rising
+            name: Shower Humidity Rising
+
+          - entity: input_number.shower_fan
+            name: Fan
+
+
+      - type: entities
+        title: 'Humidity Bathroom'
+        show_header_toggle: false
+        entities:
+          - entity: sensor.bathroom_humidity_stats
+            name: Bathroom Humidity
+
+          - entity: binary_sensor.bathroom_humidity_rising
+            name: Shower Humidity Rising
+
+          - entity: input_number.bathroom_fan
+            name: Fan
+
+              
+      - type: history-graph
+        title: 'Humidity Graph'
+        hours_to_show: 2
+        entities:
+          - sensor.shower_humidity_stats
+          - sensor.bathroom_humidity_stats
+
+      - type: history-graph
+        title: 'Temperature Graph'
+        hours_to_show: 2
+        entities:
+          - sensor.bedroom_temperature_temperature
+          - sensor.office_temperature_temperature
+          - sensor.shower_temperature_temperature
+
+
+
+
+
+  # - name: Printer
+  #   title: Printer
+  #   icon: mdi:printer-3d
+  #   cards:
+
+  #     - type: entities
+  #       title: Room Switches
+  #       show_header_toggle: false
+  #       entities:
+  #         - switch.wall_switch_158d00022abd5e
+  #         - switch.pc_subwoofer
+
+  #     - type: entities
+  #       title: Printer Status
+  #       show_header_toggle: false
+  #       entities:
+  #         - binary_sensor.ender_3_printing
+  #         - binary_sensor.ender_3_printing_error
+  #         - sensor.ender_3_actual_bed_temp
+  #         - sensor.ender_3_actual_tool0_temp
+  #         - sensor.ender_3_current_state
+  #         - sensor.ender_3_job_percentage
+  #         - sensor.ender_3_time_elapsed
+  #         - sensor.ender_3_time_remaining
+
+  #     - type: picture-entity
+  #       entity: camera.octoprint
+  #       camera_view: live
+  #       name: Live Camera
+  #       show_state: false

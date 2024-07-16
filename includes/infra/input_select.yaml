@@ -1,0 +1,45 @@
+# ############################################################
+# #
+# # Room Location
+# #
+# ############################################################
+#   doug_room_location:
+#     name: Doug's Room Location
+#     options:
+#       - Office
+#       - Lounge
+#       - Car
+#       - Work
+#       - Away
+
+#   emi_room_location:
+#     name: Emi's Room Location
+#     options:
+#       - Office
+#       - Lounge
+#       - Away
+
+############################################################
+#
+# Dimmers
+#
+############################################################
+
+  lounge_light:
+    name: Lounge Scene
+    options:
+      - Lounge
+      - Work
+      - Media
+    initial: Lounge
+    icon: mdi:palette
+
+  bedroom_light:
+    name: Bedroom Scene
+    options:
+      - Bedroom
+      - Relax
+      - Concentrate
+    initial: Bedroom
+    icon: mdi:palette
+

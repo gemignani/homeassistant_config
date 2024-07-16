@@ -1,0 +1,17 @@
+############################################################
+#
+# Alarm Panel
+#
+############################################################
+
+  - platform: manual
+    name: Alarm
+    # code: 1234
+    arming_time: 60
+    delay_time: 120
+    trigger_time: 4
+    disarmed:
+      trigger_time: 0
+    armed_home:
+      arming_time: 0
+      delay_time: 0

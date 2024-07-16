@@ -1,0 +1,16 @@
+############################################################
+#
+# Zones
+#
+############################################################
+
+# - name: Work
+#   latitude: !secret zone_work_latitude
+#   longitude: !secret zone_work_longitude
+#   radius: 180
+#   icon: mdi:worker
+
+# - name: Waitrose
+#   latitude: 51.355206
+#   longitude: -0.700082
+#   radius: 100

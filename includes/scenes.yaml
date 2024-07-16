@@ -1,0 +1,57 @@
+############################################################
+#
+# Dimmer Lounge
+#
+############################################################
+
+  - name: Lounge
+    entities:
+      light.lights_lounge:
+        state: "on"
+        color_temp: 500
+        brightness: 255
+  - name: Work
+    entities:
+      light.lights_lounge:
+        state: "on"
+        color_temp: 250
+        brightness: 255
+  - name: Media
+    entities:
+      light.lights_lounge:
+        state: "on"
+        color_temp: 500
+        brightness: 45
+
+  - name: Night
+    entities:
+      light.lights_lounge:
+        state: "on"
+        color_temp: 500
+        brightness: 25
+############################################################
+#
+# House Empty
+#
+############################################################
+
+  - name: Empty
+    entities:
+      light.lights_bathroom:
+        state: "off"
+      light.lights_shower:
+        state: "off"
+      light.lights_lounge:
+        state: "off"
+      light.lights_hall:
+        state: "off"
+      light.bedside:
+        state: "off"
+      switch.kitchen_switch_main_switch_right:
+        state: "off"
+      switch.kitchen_switch_main_switch_left:
+        state: "off"
+      switch.bedroom_switch:
+        state: "off"
+      switch.office_switch_main:
+        state: "off"

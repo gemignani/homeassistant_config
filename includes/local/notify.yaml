@@ -1,0 +1,15 @@
+############################################################
+#
+# Telegram Notification via Cloud
+#
+############################################################
+
+#- platform: telegram
+#  name: notify_telegram
+#  chat_id: !secret telegram_chatid
+
+- platform: group
+  name: notify_apps
+  services:
+    - service: mobile_app_doug_s23
+    - service: mobile_app_emi_s23

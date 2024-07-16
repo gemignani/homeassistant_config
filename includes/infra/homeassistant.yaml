@@ -1,0 +1,23 @@
+############################################################
+#
+# Homeassistant Config
+#
+############################################################
+
+  name: Home
+  # latitude: !secret home_latitude
+  # longitude: !secret home_longitude
+  # elevation: !secret home_elevation
+  unit_system: metric
+  external_url: !secret external_url
+  internal_url: !secret internal_url
+  time_zone: Europe/London
+  customize:
+    light.lights_lounge:
+      friendly_name: Lounge
+    light.lights_shower:
+      friendly_name: Shower
+    light.lights_bathroom:
+      friendly_name: Bathroom
+    light.lights_hall:
+      friendly_name: Hall

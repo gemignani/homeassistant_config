@@ -1,0 +1,173 @@
+############################################################
+#
+# Power Consumption / PCs
+#
+############################################################
+# https://community.home-assistant.io/t/help-needed-with-automation-and-json-template-warning/297258
+# - platform: template
+#   sensors:
+#     office_pc:
+#       friendly_name: 'Doug PC'
+#       value_template: >-
+#         {% if states('sensor.office_pc_current_consumption') | float > 30 %}
+#           on
+#         {% else %}
+#           off
+#         {% endif %}
+
+#     emi_pc:
+#       friendly_name: 'Emi PC'
+#       value_template: >-
+#         {% if states('sensor.lounge_emipc_current_consumption') | float > 10 %}
+#           on
+#         {% else %}
+#           off
+#         {% endif %}
+
+#     shower_humidity_rising:
+#       friendly_name: "Shower Humidity Rising"
+#       value_template: >-
+#         {{ (states.sensor.shower_humidity_stats | float) > states.input_number.shower_fan.state | int }}
+
+#     bathroom_humidity_rising:
+#       friendly_name: "Bathroom Humidity Rising"
+#       value_template: >-
+#         {{ (states.sensor.bathroom_humidity_stats | float) > states.input_number.bathroom_fan.state | int }}
+
+############################################################
+#
+# Humidity
+#
+############################################################
+
+# Tracks 3 humidity readings over 10 minutes. If the change is greater than 10%, evals to true. (10/(60*10))
+# - platform: trend
+#   sensors:
+#     bathroom_humidity_trend:
+#       max_samples: 3
+#       entity_id: sensor.office_temperature_humidity
+#       sample_duration: 600
+#       min_gradient: 0.01666
+# # Tracks 2 humidity readings over 5 minutes. If the change decrease is greater than 5%, evals to true. (-5/(60*5))
+# # Bumped samples down from 4 to 2, because it was staying on way too long.
+# - platform: trend
+#   sensors:
+#     bathroom_humidity_trend_off:
+#       max_samples: 2
+#       entity_id: sensor.office_temperature_humidity
+#       sample_duration: 300
+#       min_gradient: -0.016666
+      
+# # Tracks 3 humidity readings over 3 minutes. If the change is greater than 40%, evals to true. (40/(180))
+# # Guest bath trends spike faster because it's a smaller room.
+# - platform: trend
+#   sensors:
+#     shower_humidity_trend:
+#       # max_samples: 3
+#       entity_id: sensor.shower_temperature_humidity
+#       sample_duration: 180
+#       min_gradient: 0.2222
+# # Tracks 4 humidity readings over 5 minutes. If the change decrease is greater than 5%, evals to true. (-5/(60*5))
+# - platform: trend
+#   sensors:
+#     shower_humidity_trend_off:
+#       # max_samples: 3
+#       entity_id: sensor.shower_temperature_humidity
+#       sample_duration: 300
+#       min_gradient: -0.016666
+
+
+
+# - platform: template
+#   sensors:
+#     shower_humidity_rising_five:
+#       friendly_name: "Shower Humidity Rising Five"
+#       icon_template: mdi:water-percent
+#       value_template: >-
+#         {{ state_attr('sensor.shower_humidity_stats', 'change')|int > 5 }}
+
+#     bathroom_humidity_rising_five:
+#       friendly_name: "Bathroom Humidity Rising Five"
+#       icon_template: mdi:water-percent
+#       value_template: >-
+#         {{ state_attr('sensor.bathroom_humidity_stats', 'change')|int > 5 }}
+
+############################################################
+#
+# Occupancy
+#
+############################################################
+
+# - platform: 'bayesian'  
+#   name: 'House Occupied'
+#   # Indicates the probability that this is true in a day – 
+#   # let’s say I’m home 80% time, or 0.8
+#   prior: 0.8
+
+#   # How sure should it be to guess that I’m home?
+#   # By setting the bar high at 85%, we are requiring more than one platform to be ‘home’ before it will flip to on.
+#   probability_threshold: 0.85
+#   observations:
+#     - entity_id: 'person.douglas'
+#       prob_given_true: 1
+#       prob_given_false: 0.25
+#       platform: 'state'
+#       to_state: 'home'
+
+#     - entity_id: 'person.elaine'
+#       prob_given_true: 1
+#       prob_given_false: 0.25
+#       platform: 'state'
+#       to_state: 'home'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d0002253b71'
+    #   # If I’m home, how likely is this state true? 
+    #   # In other words, how reliable is that platform at marking me home?
+    #   prob_given_true: 1
+
+    #   # How likely is this platform to be wrong – for it to be ‘home’ when I’m not home?
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d0001e527f7'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d000201311b'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d0001a8d446'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d0001e548b8'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d00023d8a4c'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d000210cbb3'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'
+
+    # - entity_id: 'binary_sensor.motion_sensor_158d0001aa8130'
+    #   prob_given_true: 1
+    #   prob_given_false: 0
+    #   platform: 'state'
+    #   to_state: 'on'

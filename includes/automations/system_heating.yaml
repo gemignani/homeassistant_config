@@ -1,0 +1,109 @@
+############################################################
+#
+# Valves
+#
+############################################################
+
+- alias: 'Heating - Valves 9am'
+  trigger:
+    platform: time
+    at: '08:55:00'
+  condition:
+    - condition: state
+      entity_id:  input_boolean.holiday_mode
+      state: 'off'
+  action:
+    # office
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.office_valve2
+        temperature: 24
+
+    # bedroom
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.bedroom_valve
+        temperature: 15
+
+- alias: 'Heating - Valves 7pm'
+  trigger:
+    platform: time
+    at: '19:00:00'
+  condition:
+    - condition: state
+      entity_id:  input_boolean.holiday_mode
+      state: 'off'
+  action:
+    # office
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.office_valve2
+        temperature: 15
+    # bedroom
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.bedroom_valve
+        temperature: 24
+
+############################################################
+#
+# Heating Schedule
+#
+############################################################
+
+- alias: 'Heating - Schedule 9am'
+  trigger:
+    platform: time
+    at: '08:30:00'
+  condition:
+    - condition: state
+      entity_id:  input_boolean.holiday_mode
+      state: 'off'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.hive_thermostat_heat
+        temperature: 20
+
+- alias: 'Heating - Schedule 11pm'
+  trigger:
+    platform: time
+    at: '22:30:00'
+  action:
+    - service: climate.set_temperature
+      data:
+        entity_id: climate.hive_thermostat_heat
+        temperature: 7
+
+
+############################################################
+#
+# Heating Occupancy
+#
+############################################################
+
+- alias: "Heating - Home Occupied"
+  trigger:
+    platform: state
+    entity_id: input_boolean.house_occupied
+    to: 'on'
+    for:
+      minutes: 2
+  action:
+    - service:  climate.set_temperature
+      data:
+        entity_id: climate.hive_thermostat_heat
+        temperature: 20
+
+- alias: 'Heating - Home Empty'
+  trigger:
+    platform: state
+    entity_id: input_boolean.house_occupied
+    to: 'off'
+    for:
+      minutes: 2
+  action:
+    - service:  climate.set_temperature
+      data:
+        entity_id: climate.hive_thermostat_heat
+        temperature: 7

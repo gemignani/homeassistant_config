@@ -1,0 +1,109 @@
+title: System
+views:
+  - name: System
+    title: System
+    icon: mdi:database
+    cards:
+      - type: glance
+        title: General
+        entities:
+          - entity: input_boolean.house_occupied
+            name: Occupied
+          - entity: input_boolean.holiday_mode
+            name: Holiday
+          - entity: input_boolean.guest_mode
+            name: Guest
+          - entity: input_boolean.night_mode
+            name: Night
+          - entity: input_boolean.cooking_mode
+            name: Cooking
+            
+      - type: entities
+        title: People & Zones
+        entities:
+          - person.douglas
+          - person.elaine
+          - zone.home
+          
+      # - type: entities
+      #   title: 'PC Status'
+      #   show_header_toggle: false
+      #   entities:
+      #     - binary_sensor.emi_pc
+      #     - binary_sensor.office_pc
+
+      - type: history-graph
+        title: 'Motion'
+        hours_to_show: 1
+        entities:
+         - group.all_motion
+         - input_boolean.house_occupied
+        #  - alarm_control_panel.alarm
+         
+
+      - type: entities
+        title: 'Load'
+        entities:
+          - sensor.system_monitor_load_15m
+          - sensor.system_monitor_processor_temperature     
+
+  # - name: Link
+  #   title: Link
+  #   icon: mdi:signal
+  #   cards:
+  #     - type: history-graph
+  #       title: 'Link Quality Lounge'
+  #       entities:
+  #         - sensor.lounge_dimmer_linkquality
+  #         - sensor.lounge_dimmer_tv_linkquality
+  #         - sensor.lounge_presence_linkquality
+  #         - sensor.lounge_switch_main_linkquality
+  #         - sensor.lounge_window_av_linkquality
+  #         - sensor.lounge_window_dinner_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Office'
+  #       entities:
+  #         - sensor.office_presence_linkquality
+  #         - sensor.office_switch_main_linkquality
+  #         - sensor.office_switch_pc_linkquality
+  #         - sensor.office_temperature_linkquality
+  #         - sensor.office_window_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Bathroom'
+  #       entities:
+  #         - sensor.bathroom_presence_linkquality
+  #         - sensor.bathroom_switch_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Shower'
+  #       entities:
+  #         - sensor.shower_presence_linkquality
+  #         - sensor.shower_switch_linkquality
+  #         - sensor.shower_temperature_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Hall'
+  #       entities:
+  #         - sensor.hall_door_linkquality
+  #         - sensor.hall_presence_linkquality
+  #         - sensor.hall_switch_alarm_linkquality
+  #         - sensor.hall_switch_far_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Kitchen'
+  #       entities:
+  #         - sensor.kitchen_presence_linkquality
+  #         - sensor.kitchen_switch_main_linkquality
+
+  #     - type: history-graph
+  #       title: 'Link Quality Bedroom'
+  #       entities:
+  #         - sensor.bedroom_presence_linkquality
+  #         - sensor.bedroom_switch_doug_linkquality
+  #         - sensor.bedroom_switch_emi_linkquality
+  #         - sensor.bedroom_switch_linkquality
+  #         - sensor.bedroom_switch_wall_linkquality #######no hall?
+  #         - sensor.bedroom_temperature_linkquality
+  #         - sensor.bedroom_window_linkquality

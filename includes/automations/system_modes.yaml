@@ -1,0 +1,180 @@
+############################################################
+#
+# House occupation changed
+#
+############################################################
+
+- alias: 'System - Set Occupied Off'
+  trigger:
+    platform: state
+    entity_id: zone.home
+    to: '0'
+    for:
+      minutes: 3
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.house_occupied
+
+- alias: "System - Set Occupied On"
+  trigger:
+    platform: state
+    entity_id: zone.home
+    from: '0'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.house_occupied
+
+- alias: 'System - Home Empty'
+  trigger:
+    platform: state
+    entity_id: input_boolean.house_occupied
+    to: 'off'
+    for:
+      minutes: 2
+  action:
+    service: scene.turn_on
+    entity_id: scene.empty
+
+- alias: 'System - Holiday Mode'
+  trigger:
+    platform: state
+    entity_id: input_boolean.house_occupied
+    to: 'off'
+    for:
+      hours: 18
+  action:
+    - service: notify.notify_apps
+      data:
+        title: "Presence System"
+        message: "Holiday mode activated"
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.holiday_mode
+      
+############################################################
+#
+# Home Assistant Automated Configuration Backup
+#
+############################################################
+
+# 2020.05.31 disable for pi
+# - alias: 'System - Backup Configuration'
+#   trigger:
+#     platform: time
+#     at: '03:00:00'
+#   action:
+#     service: shell_command.backup_config
+
+
+############################################################
+#
+# Driving mode
+#
+############################################################
+
+
+# - alias: 'System - Notify Doug driving'
+#   trigger:
+#     platform: state
+#     entity_id: sensor.doug_p30_detected_activity
+#     to: "in_vehicle"
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.holiday_mode
+#       state: 'off'    
+#   action:
+#     - service: notify.notify_apps
+#       data:
+#         title: "Presence System"
+#         message: "Doug is driving"
+
+
+############################################################
+#
+# Night Mode
+#
+############################################################
+
+- alias: 'System - Night mode ON'
+  trigger:
+    platform: time
+    at: '00:05:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.night_mode
+
+- alias: 'System - Night mode OFF'
+  trigger:
+    platform: time
+    at: '07:00:00'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.night_mode
+
+############################################################
+#
+# Cooking Mode
+#
+############################################################
+
+- alias: 'System - Cooking mode ON'
+  trigger:
+    platform: time
+    at: '18:00:00'
+  action:
+    - service: input_boolean.turn_on
+      data:
+        entity_id: input_boolean.cooking_mode
+
+- alias: 'System - Cooking mode OFF'
+  trigger:
+    platform: time
+    at: '20:00:00'
+  action:
+    - service: input_boolean.turn_off
+      data:
+        entity_id: input_boolean.cooking_mode
+
+############################################################
+#
+# Relax Mode
+#
+############################################################
+
+# - alias: 'System - Relax mode ON'
+#   trigger:
+#     platform: state
+#     entity_id: media_player.lg_webos_smart_tv
+#     to: 'on'
+#   condition:
+#     - condition: or
+#       conditions:
+#         - condition: time
+#           after: '17:00:00'
+#           weekday:
+#           - mon
+#           - tue
+#           - wed
+#           - thu
+#           - fri
+#         - condition: time
+#           weekday:
+#           - sat
+#           - sun
+#   action:
+#     - service: input_boolean.turn_on
+#       data:
+#         entity_id: input_boolean.relax_mode
+
+# - alias: 'System - Relax mode OFF'
+#   trigger:
+#     platform: time
+#     at: '01:30:00'
+#   action:
+#     - service: input_boolean.turn_off
+#       data:
+#         entity_id: input_boolean.relax_mode

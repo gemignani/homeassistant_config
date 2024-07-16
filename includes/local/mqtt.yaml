@@ -1,0 +1,16 @@
+  broker: !secret mqtt_host
+  port: !secret mqtt_port
+  client_id: home-assistant-1  
+  username: !secret mqtt_user
+  password: !secret mqtt_password
+  discovery: true
+  
+  # keepalive: 60
+  # discovery_prefix: homeassistant
+  # # protocol: 3.1
+  # birth_message:
+  #   topic: 'hass/status'
+  #   payload: 'online'
+  # will_message:
+  #   topic: 'hass/status'
+  #   payload: 'offline'

@@ -1,0 +1,167 @@
+############################################################
+#
+# Humidity
+#
+############################################################
+
+- alias: 'Bathroom - Fan Auto Off'
+  trigger:
+    platform: state
+    entity_id: input_boolean.bathroom_hold
+    from: 'off'
+    to: 'on'
+    for:
+        minutes: 16
+  action:
+    - service: switch.turn_off
+      entity_id: switch.bathroom_fan
+
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.bathroom_hold
+
+- alias: 'Bathroom - Fan Manual Off'
+  trigger:
+    platform: state
+    entity_id: switch.bathroom_fan
+    from: 'off'
+    to: 'on'
+    for:
+        minutes: 12
+  condition:
+    condition: state
+    entity_id: input_boolean.bathroom_hold
+    state: 'off'
+  action:
+    - service: switch.turn_off
+      entity_id: switch.bathroom_fan
+
+
+############################################################
+#
+# Motion
+#
+############################################################
+
+- alias: 'Bathroom - Motion Light on'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_presence_occupancy
+    to: 'on'
+  action:
+    - service: light.turn_on
+      data:
+        entity_id: light.lights_bathroom
+
+- alias: 'Bathroom - Motion Light off'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bathroom_presence_occupancy
+    to: 'off'
+    for: '00:10:00'
+  action:
+    - service: light.turn_off
+      entity_id: light.lights_bathroom
+
+
+############################################################
+#
+# Switch
+#
+############################################################
+
+- alias: 'Bathroom - Swith Single'
+  trigger:
+    platform: state
+    entity_id: sensor.bathroom_switch_click
+    to: 'single'
+  action:
+    - service: light.toggle
+      data:
+        entity_id: light.lights_bathroom
+
+
+- alias: 'Bathroom - Swith Long'
+  trigger:
+    platform: state
+    entity_id: sensor.bathroom_switch_click
+    to: 'long'
+  action:
+    - service: switch.toggle
+      entity_id: switch.bathroom_fan
+
+# - alias: 'Bathroom - Light Long'
+#   trigger:
+#     platform: state
+#     entity_id: sensor.bathroom_switch_click
+#     to: 'long'
+#   action:
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.lights_bathroom
+#         brightness: >
+#           {% if states.light.lights_bathroom.attributes.brightness|default(255) < 250 %}
+#            255
+#           {% else %}
+#            45
+#           {% endif %}
+
+############################################################
+#
+# Humidity
+#
+############################################################
+
+# - alias: 'Bathroom - Humidity Heating'
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.bathroom_humidity_rising_five
+#       from: 'off'
+#       to: 'on'
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.bathroom_hold
+#       state: 'off'
+#     - condition: time
+#       after: '06:00:00'
+#     - condition: state
+#       entity_id: binary_sensor.house_occupied
+#       state: 'on'
+#   action:
+#     - service: notify.notify_apps
+#       data:
+#         message: "Bathroom Humidity High"
+
+#     - service: homeassistant.turn_on
+#       entity_id: input_boolean.bathroom_hold
+
+# - alias: 'Bathroom - Fan Auto Off'
+#   trigger:
+#     platform: state
+#     entity_id: switch.shower_fan
+#     from: 'off'
+#     to: 'on'
+#     for:
+#         minutes: 8
+#   condition:
+#     condition: state
+#     entity_id: input_boolean.bathroom_hold
+#     state: 'off'
+#   action:
+#     - service: switch.turn_off
+#       entity_id: switch.shower_fan
+
+# - alias: 'Bathroom - Humidity Holding'
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.bathroom_hold
+#     from: 'off'
+#     to: 'on'
+#     for:
+#         minutes: 16
+#   action:
+#     # - service: notify.notify_telegram
+#     #   data:
+#     #     message: "Bathroom Humidity 16 min passed"
+
+#     - service: homeassistant.turn_off
+#       entity_id: input_boolean.shower_hold
